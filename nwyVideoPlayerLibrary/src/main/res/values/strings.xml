@@ -1,12 +1,1 @@
-<resources>
-    <string name="svip_feedback_text">反馈</string>
-    <string name="marquee_play_text">温馨提示: 部分影片因网速等原因缓冲时间可能需要较长, 请耐心等待一会即可播放, 谢谢!!!\t\t\t\t\t\t\t\t\t\t\t\t温馨提示: 部分影片因网速等原因缓冲时间可能需要较长, 请耐心等待一会即可播放, 谢谢!!!\t\t\t\t\t\t\t\t\t\t\t\t温馨提示: 部分影片因网速等原因缓冲时间可能需要较长, 请耐心等待一会即可播放, 谢谢!!!\t\t\t\t\t\t\t\t\t\t\t\t温馨提示: 部分影片因网速等原因缓冲时间可能需要较长, 请耐心等待一会即可播放, 谢谢!!!\t\t\t\t\t\t\t\t\t\t\t\t温馨提示: 部分影片因网速等原因缓冲时间可能需要较长, 请耐心等待一会即可播放, 谢谢!!!\t\t\t\t\t\t\t\t\t\t\t\t温馨提示: 部分影片因网速等原因缓冲时间可能需要较长, 请耐心等待一会即可播放, 谢谢!!!\t\t\t\t\t\t\t\t\t\t\t\t</string>
-    <string name="top_back">返回</string>
-    <string name="top_close">关闭</string>
-    <string name="play_hint_1">1.先选择一个视频，记住一定要去到视频（可播放）页面；</string>
-    <string name="play_hint_2">2.然后点击右上角的“播放”，就可以观看了</string>
-    <string name="play_hint_3">\t\t\t\t\t\t注意: 如果是搜索出来的视频,请先点击进去,去到视频(可播放)的页面。然后 点击右上角的“播放”，就可以观看了</string>
-
-
-
-</resources>
+<resources></resources>

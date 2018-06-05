@@ -1,18 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-
-
+    compileSdkVersion 25
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -21,24 +17,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation 'com.android.support:appcompat-v7:25.2.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation files('libs/GDTUnionSDK.4.14.558.min.jar')
+
+    implementation 'com.lzy.net:okgo:3.0.4'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    //implementation 'com.android.support:multidex:1.0.0'
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
 }
 
 //////// 打包发布配置开始 ////////
 apply plugin: 'maven'
 ext {
     // 从Github上clone下来的项目的本地地址
-    GITHUB_REPO_PATH = "E:/android/Project/DevelopmentSDK/Demo/NWYVideoPlayer"       //这里指定的就是刚刚新建项目后clone下来的在本地的路径
+    GITHUB_REPO_PATH = "E:/android/Project/DevelopmentSDK/Demo/VideoPlayer/NWYVideoPlayer"
+    //这里指定的就是刚刚新建项目后clone下来的在本地的路径
     PUBLISH_GROUP_ID = 'com.ningwuyue.sdk'
     PUBLISH_ARTIFACT_ID = 'videoplayer'
     PUBLISH_VERSION = android.defaultConfig.versionName;

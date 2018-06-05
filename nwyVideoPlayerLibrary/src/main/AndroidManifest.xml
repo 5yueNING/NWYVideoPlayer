@@ -4,6 +4,9 @@
 
     <application>
         <activity android:name=".MainActivity"></activity>
+
+        <activity android:name=".ui.VipWebviewActivity"></activity>
+
     </application>
 
 </manifest>

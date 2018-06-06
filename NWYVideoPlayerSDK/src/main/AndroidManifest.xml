@@ -1,11 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ningwuyue.sdk.nwyvideoplayersdk" >
+    package="com.ningwuyue.sdk.nwyvideoplayersdk">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <application
-        >
-
+    <application>
         <activity
             android:name=".ui.VideoPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

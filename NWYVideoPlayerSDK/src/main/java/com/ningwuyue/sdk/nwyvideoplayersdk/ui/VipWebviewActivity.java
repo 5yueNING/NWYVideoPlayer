@@ -69,6 +69,7 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
         Intent intent = new Intent(activity,VipWebviewActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_VIPWEBENTITY_KEY, vipwebEntity);
+        intent.putExtras(bundle);
         activity.startActivity(intent);
     }
 

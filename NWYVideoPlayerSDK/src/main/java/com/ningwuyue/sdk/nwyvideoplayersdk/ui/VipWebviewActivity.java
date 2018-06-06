@@ -66,7 +66,7 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
     private LinearLayout mLl_guide_play;
 
     public static void startVipWebViewActivity(Activity activity, VipwebEntity vipwebEntity) {
-        Intent intent = new Intent();
+        Intent intent = new Intent(activity,VipWebviewActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_VIPWEBENTITY_KEY, vipwebEntity);
         activity.startActivity(intent);

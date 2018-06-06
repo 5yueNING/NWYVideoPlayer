@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="55dp"
+    android:layout_height="50dp"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/tv_anthology_btn"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/nwyvideo_selector_tv_solid_bg"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/nwyvideo_textSize16" />
+
+
+</RelativeLayout>

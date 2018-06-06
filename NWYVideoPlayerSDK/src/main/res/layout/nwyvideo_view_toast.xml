@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/nwyvideo_shape_btn_semicircle_y_bg"
+              android:gravity="center"
+    >
+
+
+    <TextView
+        android:id="@+id/tv_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="^_^ 恭喜您"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/nwyvideo_textSize13"
+        />
+
+</LinearLayout>

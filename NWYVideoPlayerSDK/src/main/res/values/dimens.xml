@@ -1,0 +1,40 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nwyvideo_activity_horizontal_margin">16dp</dimen>
+    <dimen name="nwyvideo_activity_vertical_margin">16dp</dimen>
+    <dimen name="nwyvideo_textSize17">17sp</dimen>
+    <dimen name="nwyvideo_textSize16">16sp</dimen>
+    <dimen name="nwyvideo_textSize15">15sp</dimen>
+    <dimen name="nwyvideo_textSize14">14sp</dimen>
+    <dimen name="nwyvideo_textSize13">13sp</dimen>
+    <dimen name="nwyvideo_textSize12">12sp</dimen>
+    <dimen name="nwyvideo_textSize11">11sp</dimen>
+    <dimen name="nwyvideo_textSize10">10sp</dimen>
+
+    <!--字体大小-->
+    <dimen name="top_title_size">16sp</dimen>
+    <dimen name="main_text_size">14sp</dimen>
+
+
+    <!--view尺寸-->
+    <dimen name="nwyvideo_top_view_height">35dp</dimen>
+
+
+    <dimen name="nwyvideo_alert_width">290dp</dimen>
+    <dimen name="nwyvideo_common_circle_width">3dp</dimen>
+    <dimen name="nwyvideo_progress_circle_radius">34dp</dimen>
+
+
+    <!--闪屏页-->
+    <dimen name="nwyvideo_shplsh_marginBottom">80dp</dimen>
+
+
+    <!--顶部状态栏-->
+    <dimen name="nwyvideo_top_bar_height">35dp</dimen>
+    <dimen name="nwyvideo_top_bar_title_size">16sp</dimen>
+    <dimen name="nwyvideo_top_bar_back_size">15sp</dimen>
+    <dimen name="nwyvideo_top_bar_back_padding_left">7dp</dimen>
+    <dimen name="nwyvideo_top_bar_back_w_h">15dp</dimen>
+
+
+</resources>

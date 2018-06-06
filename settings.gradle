@@ -1,1 +1,1 @@
-include ':app', ':nwyVideoPlayerLibrary'
+include ':app', ':NWYVideoPlayerSDK'

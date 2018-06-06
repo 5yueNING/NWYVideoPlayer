@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="nwyvideo_colorPrimary">#0185f0</color>
+    <color name="nwyvideo_colorPrimaryDark">#0185f0</color>
+    <color name="nwyvideo_colorAccent">#C7C7CD</color>
+    <color name="nwyvideo_colorProgress">#CAEBFB</color>
+    <color name="nwyvideo_textColorMain">#333333</color>
+    <color name="nwyvideo_textColorGray">#828282</color>
+    <color name="nwyvideo_textColorFrenchGrey">#C7C7CD</color>
+    <color name="nwyvideo_textColorRed">#ff0000</color>
+    <color name="nwyvideo_itemBg">#EFEFF3</color>
+    <color name="nwyvideo_main_bg">#f6f6f6</color>
+</resources>

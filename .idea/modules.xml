@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NWYVideoPlayer.iml" filepath="$PROJECT_DIR$/NWYVideoPlayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NWYVideoPlayerSDK/NWYVideoPlayerSDK.iml" filepath="$PROJECT_DIR$/NWYVideoPlayerSDK/NWYVideoPlayerSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nwyVideoPlayerLibrary/nwyVideoPlayerLibrary.iml" filepath="$PROJECT_DIR$/nwyVideoPlayerLibrary/nwyVideoPlayerLibrary.iml" />
     </modules>
   </component>
 </project>

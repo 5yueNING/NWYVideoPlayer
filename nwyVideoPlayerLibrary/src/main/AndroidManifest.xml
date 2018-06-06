@@ -3,10 +3,6 @@
     package="com.ningwuyue.sdk.videoplayer">
 
     <application>
-        <activity android:name=".MainActivity"></activity>
-
-        <activity android:name=".ui.VipWebviewActivity"></activity>
-
     </application>
 
 </manifest>

@@ -26,5 +26,16 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
+
+        <!-- 广点通start -->
+        <service
+            android:name="com.qq.e.comm.DownloadService"
+            android:exported="false" />
+
+        <activity
+            android:name="com.qq.e.ads.ADActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
+        <!-- 广点通end -->
     </application>
 </manifest>

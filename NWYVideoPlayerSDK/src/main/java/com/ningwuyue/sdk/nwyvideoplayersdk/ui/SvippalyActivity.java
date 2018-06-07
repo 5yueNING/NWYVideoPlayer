@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -67,80 +66,25 @@ public class SvippalyActivity extends BaseActivity {
     private String mVwebName;//顶部标题
     private String mSvipPlayUrl;//服务器获取的URL
     private String mVweb;
-
     private String mHtmltitle;
     private String mHtmlurl;//请求的url
 
     private String mJs_1 = null, mJs_2 = null;
     private String mUser_agent = null;
     private String mDown_url;
-
     private int intLine = 2;
 
-    // String html_js = "document.getElementsByTagName('html')[0].innerHTML;";
-    // private static final String SCRIPT_SRC = "document.getElementById('video').src";
     private ArrayList<AnthologyEntity> mAnthologyEntityList;
-    private boolean isResume = false;
-    private String mFromType;
     private String[] mKeywordArray;
     private boolean isShield_Src = true;//是否是拦截的
     private boolean mIsClickAnthology;
     private VideoPlayerAdDialog mVideoPlayerAdDialog;
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg != null && msg.what == WHAT_AD) {
-                startShowAdDialog();
-            }
-        }
-    };
     private ProgressBar mProgressBar;
     private RelativeLayout mRl;
     private int mDefaultVideoScreen = 1;
     private TextView mTvToptitle;
 
-    /**
-     * @param context
-     * @param event------svip实体类
-     * @param vweb-----平台        号
-     * @param htmlTitle----网页标题
-     * @param htmlUrl------网页url
-     * @param vwebName-----平台名
-     */
-    public static void startSvipAvtivity(
-            Context context, SvipplayEntity event, String vweb, String htmlTitle, String htmlUrl,
-            String vwebName) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(SvippalyActivity.BUNDLE_SVIPENTITY_KEY, event);
-        bundle.putString(SvippalyActivity.BUNDLE_VWEB_KEY, vweb);
-        bundle.putString(SvippalyActivity.BUNDLE_HTMLTITLE_KEY, htmlTitle);
-        bundle.putString(SvippalyActivity.BUNDLE_HTMLURL_KEY, htmlUrl);
-        bundle.putString(SvippalyActivity.BUNDLE_NAME_KEY, vwebName);
 
-        Intent intent = new Intent(context, SvippalyActivity.class);
-        intent.putExtras(bundle);
-        context.startActivity(intent);
-    }
-
-    /**
-     * 这个只是原生播放时刷新跳转过来的
-     */
-    public static void startAdvancedplayActivitytoSvipAvtivity(
-            Context context, SvipplayEntity event, String vweb, String htmlTitle, String htmlUrl,
-            String vwebName, int intLine) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(BUNDLE_SVIPENTITY_KEY, event);
-        bundle.putString(BUNDLE_VWEB_KEY, vweb);
-        bundle.putString(BUNDLE_HTMLTITLE_KEY, htmlTitle);
-        bundle.putString(BUNDLE_HTMLURL_KEY, htmlUrl);
-        bundle.putString(BUNDLE_NAME_KEY, vwebName);
-        bundle.putString(BUNDLE_KEY_FROMTYPE, FROMTYPE_ADVANCEDPLAYACTIVITY);
-        bundle.putInt(BUNDLE_KEY_INTLINE, intLine);
-        Intent intent = new Intent(context, SvippalyActivity.class);
-        intent.putExtras(bundle);
-        context.startActivity(intent);
-    }
 
     @Override
     protected int setLayoutId() {
@@ -156,9 +100,6 @@ public class SvippalyActivity extends BaseActivity {
         configView();
     }
 
-
-
-
     private void getBundleData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -166,7 +107,6 @@ public class SvippalyActivity extends BaseActivity {
             mHtmltitle = bundle.getString(BUNDLE_HTMLTITLE_KEY, "");
             mHtmlurl = bundle.getString(BUNDLE_HTMLURL_KEY, "");
             mVwebName = bundle.getString(BUNDLE_NAME_KEY, "");
-            mFromType = bundle.getString(BUNDLE_KEY_FROMTYPE, "");
             intLine = bundle.getInt(BUNDLE_KEY_INTLINE, 2);
             SvipplayEntity svipplayEntity = bundle.getParcelable(BUNDLE_SVIPENTITY_KEY);
             if (svipplayEntity != null) {
@@ -178,7 +118,7 @@ public class SvippalyActivity extends BaseActivity {
                 String shield_src = svipplayEntity.shield_src;
                 String release_src = svipplayEntity.release_src;
                 String svip_ad_open = svipplayEntity.svip_ad_open;
-                mDefaultVideoScreen = svipplayEntity.defaultVideoScreen;//todo
+                mDefaultVideoScreen = svipplayEntity.defaultVideoScreen;
 
                 if (!TextUtils.isEmpty(svip_ad_open) && svip_ad_open.equals("1")) {//1 是开启广告
                     if (mHandler != null) {
@@ -246,6 +186,10 @@ public class SvippalyActivity extends BaseActivity {
         //TextView mTvBottomBg=findViewById(R.id.rl_topback);
         ImageView mIvVipIcon = findViewById(R.id.iv_vip_icon);
         final LinearLayout ll_guide_play = findViewById(R.id.ll_guide_play);
+        boolean aBoolean = SPUtils.getInstance().getBoolean(SpField.CLICK_TOP_REFLUSH_PLAY);
+        if (aBoolean){
+            ll_guide_play.setVisibility(View.GONE);
+        }
         TextView tv_guide_close = findViewById(R.id.tv_guide_close);
         tv_guide_close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -496,6 +440,18 @@ public class SvippalyActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void handlerMsg(Message msg) {
+        super.handlerMsg(msg);
+        switch (msg.what){
+            case WHAT_AD:
+                startShowAdDialog();
+                break;
+
+
+        }
+
+    }
 
     @Override
     protected void onDestroy() {
@@ -530,6 +486,49 @@ public class SvippalyActivity extends BaseActivity {
             mVideoPlayerAdDialog = new VideoPlayerAdDialog();
         }
         mVideoPlayerAdDialog.show(getSupportFragmentManager(), "startShowAdDialog");
+    }
+
+
+    /**
+     * @param context
+     * @param event------svip实体类
+     * @param vweb-----平台        号
+     * @param htmlTitle----网页标题
+     * @param htmlUrl------网页url
+     * @param vwebName-----平台名
+     */
+    public static void startSvipAvtivity(
+            Context context, SvipplayEntity event, String vweb, String htmlTitle, String htmlUrl,
+            String vwebName) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SvippalyActivity.BUNDLE_SVIPENTITY_KEY, event);
+        bundle.putString(SvippalyActivity.BUNDLE_VWEB_KEY, vweb);
+        bundle.putString(SvippalyActivity.BUNDLE_HTMLTITLE_KEY, htmlTitle);
+        bundle.putString(SvippalyActivity.BUNDLE_HTMLURL_KEY, htmlUrl);
+        bundle.putString(SvippalyActivity.BUNDLE_NAME_KEY, vwebName);
+
+        Intent intent = new Intent(context, SvippalyActivity.class);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 这个只是原生播放时刷新跳转过来的
+     */
+    public static void startAdvancedplayActivitytoSvipAvtivity(
+            Context context, SvipplayEntity event, String vweb, String htmlTitle, String htmlUrl,
+            String vwebName, int intLine) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(BUNDLE_SVIPENTITY_KEY, event);
+        bundle.putString(BUNDLE_VWEB_KEY, vweb);
+        bundle.putString(BUNDLE_HTMLTITLE_KEY, htmlTitle);
+        bundle.putString(BUNDLE_HTMLURL_KEY, htmlUrl);
+        bundle.putString(BUNDLE_NAME_KEY, vwebName);
+        bundle.putString(BUNDLE_KEY_FROMTYPE, FROMTYPE_ADVANCEDPLAYACTIVITY);
+        bundle.putInt(BUNDLE_KEY_INTLINE, intLine);
+        Intent intent = new Intent(context, SvippalyActivity.class);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
 }

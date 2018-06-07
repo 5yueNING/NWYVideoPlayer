@@ -16,6 +16,7 @@ import com.ningwuyue.sdk.nwyvideoplayersdk.R;
 import com.ningwuyue.sdk.nwyvideoplayersdk.data.config.Config;
 import com.ningwuyue.sdk.nwyvideoplayersdk.data.constant.SpField;
 import com.ningwuyue.sdk.nwyvideoplayersdk.model.event.EventObject;
+import com.ningwuyue.sdk.nwyvideoplayersdk.util.common.LogUtils;
 import com.ningwuyue.sdk.nwyvideoplayersdk.util.common.SPUtils;
 import com.ningwuyue.sdk.nwyvideoplayersdk.util.common.ScreenUtils;
 import com.ningwuyue.sdk.nwyvideoplayersdk.util.common.SizeUtils;
@@ -141,7 +142,7 @@ public class VideoPlayerAdDialog extends BaseDialogFragment implements NativeAD.
         if (mHandler != null) {
             mHandler.sendEmptyMessageAtTime(WHAT_SVIP, 500);//
         }
-        NativeAD nativeAD = new NativeAD(mContext, Config.GDT_APPID, Config.GDT_APPID, this);
+        NativeAD nativeAD = new NativeAD(mContext, Config.GDT_APPID, Config.GDT_AD_READBOOK_ID, this);
         nativeAD.loadAD(3);
         if (!TextUtils.isEmpty(ad_close_but) && ad_close_but.equals("2")) {
             ViewGroup.LayoutParams layoutParams = ibtnClose.getLayoutParams();
@@ -208,6 +209,8 @@ public class VideoPlayerAdDialog extends BaseDialogFragment implements NativeAD.
     @Override
     public void onNoAD(AdError adError) {
 
+        LogUtils.e(adError.getErrorMsg()+"-------------"+adError.getErrorMsg());
+
     }
 
     @Override
@@ -217,6 +220,6 @@ public class VideoPlayerAdDialog extends BaseDialogFragment implements NativeAD.
 
     @Override
     public void onADError(NativeADDataRef nativeADDataRef, AdError adError) {
-
+        LogUtils.e(adError.getErrorMsg()+"-------------"+adError.getErrorMsg());
     }
 }

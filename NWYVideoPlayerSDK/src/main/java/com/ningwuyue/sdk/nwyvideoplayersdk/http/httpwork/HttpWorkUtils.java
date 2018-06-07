@@ -111,7 +111,7 @@ public class HttpWorkUtils {
             if (jsonObject != null) {
                 int code = jsonObject.optInt("error_code", -1);
                 SvipplayEntity svipplayEntity = null;
-                if (code == 0) {
+                if (code == 0||code==1) {
                     JSONObject obj = null;
                     try {
                         obj = jsonObject.optJSONObject("data");
@@ -126,7 +126,7 @@ public class HttpWorkUtils {
                         String url_status = obj.optString("url_status");
                         String shield_src = obj.optString("shield_src");
                         String release_src = obj.optString("release_src");
-                        String svip_ad_open = obj.optString("svip_ad_open");
+                        String svip_ad_open = obj.optString("svip_ad_open","1");//todo
                         int full_screen = obj.optInt("full_screen", 1);//// 1：以页面内开始播放，2：以全屏开始播放；不设置默认：1
                         JSONArray xuanji = jsonObject.optJSONArray("xuanji");
                         //LogUtils.e("选集的----" + xuanji);

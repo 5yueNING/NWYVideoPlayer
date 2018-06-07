@@ -45,7 +45,7 @@ public class AdDialog extends BaseDialogFragment implements NativeAD.NativeAdLis
                 EventBus.getDefault().post(new EventObject(EventObject.TAG_AD_CLOSE_RESUME_PLAYER));
             }
         });
-        NativeAD nativeAD = new NativeAD(mContext, Config.GDT_APPID, Config.GDT_AD_READBOOK_CHAPTER_ID, this);
+        NativeAD nativeAD = new NativeAD(mContext, Config.GDT_APPID, Config.GDT_AD_READBOOK_ID, this);
         nativeAD.loadAD(3);
     }
 

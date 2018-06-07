@@ -39,32 +39,19 @@ import com.tencent.smtt.sdk.WebView;
 public class VipWebviewActivity extends BaseActivity implements View.OnClickListener {
     public static final String BUNDLE_VIPWEBENTITY_KEY = "vipwebentity";
 
-    private static final int WHAT_VIP_LOGIN = 1001;
-    private static final int WHAT_LOADING_SVIP = 1003;
-    private static final int WHAT_AD_EXIT = 1004;
     private static final int WHAT_GUIDE_SHOW = 1005;
     private static final int WHAT_FINISH_REFRESHING = 1006;
 
-    private static final int WHAT_GETURL = 1009;
-    private static final int DELAYED_TIME = 500; //毫秒
-    private static final long GETURL_TIME_OUT = 20 * 1000l;//最长时间获取src
     private BaseX5Webview mX5WebView = null;
     private String mURL = null, mName = null, mLoadjs = null, mHtmlTitle = null;
     private String mPing = null;
     private String mVweb = null;
-    private String mGroupid = null;
     private String mUser_agent = null;
     //弹窗对话框;
     private boolean isResume = true;
-    private boolean isFreeback = false;
     private String mHomeUrl;
     private boolean isClearHistory;
-    //这些变量是下载上传的
-    private boolean isDestroy = false, mIsOpenCookie = true; //是否当前页需要获取
-    private String mUid;
-    private String mToken;
 
-    private boolean isFront = false;
     // 按两次返回键返回首页
     private long exitTime = 0;
     private String[] mKeywordArray;
@@ -273,7 +260,7 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
             mLLTopsvipPlayBtn.setVisibility(View.INVISIBLE);
             mLl_guide_play.setVisibility(View.GONE);
         } else {
-            boolean mIsHideGuidePlay = false;//todo
+            boolean mIsHideGuidePlay = SPUtils.getInstance().getBoolean(SpField.CLICK_TOP_SVIP);//todo
             if (mIsHideGuidePlay) {
                 mLl_guide_play.setVisibility(View.GONE);
             } else {
@@ -314,9 +301,6 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    /**
-     * webview 设置
-     */
     private void initSettings() {
         if (mX5WebView == null) {
             return;
@@ -327,7 +311,6 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
         }
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -340,7 +323,7 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
             gone(mLl_guide_play);
             showWaitingDialog();
             HttpWorkUtils.getSvipPaly(1, mHtmlTitle, mURL, mVweb, Constant.TAG_SVIP_PLAY_AD_YES);
-        } else if (id == R.id.ll_topsvip_play_btn) {
+        } else if (id == R.id.ll_guide_play) {
             gone(mLl_guide_play);
         }
     }
@@ -371,7 +354,6 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
 
     }
 
-
     @Override
     public void onBackPressed() {
         if (mX5WebView.canGoBack()) {
@@ -386,7 +368,6 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
             finish();
         }
     }
-
 
     @Override
     public void receiveEventBus(EventObject eventObject) {
@@ -406,7 +387,7 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
                         SvippalyActivity.startSvipAvtivity(VipWebviewActivity.this, event, mVweb, mHtmlTitle, mURL, mName);
                     } else if (!TextUtils.isEmpty(play_type) && play_type.equals("2")) {//原生播放
                         VideoPlayerActivity.startActivity(this, event.play_url, mHtmlTitle, Constant.VIDEO_TYPE_HTTP,
-                                mHtmlTitle, mURL, "0", true, svip_ad_open, event);
+                                mHtmlTitle, mURL, mVweb, true, svip_ad_open, event);
                     }
                 }
             }
@@ -415,7 +396,6 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void onDestroy() {
-        isDestroy = true;
         super.onDestroy();
         //releaseRes();
         destroyWebView();

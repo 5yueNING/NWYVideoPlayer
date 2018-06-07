@@ -432,17 +432,6 @@ public class SvippalyActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isResume = true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        isResume = false;
-    }
 
     @Override
     public void receiveEventBus(EventObject eventObject) {

@@ -10,6 +10,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,8 +24,14 @@ import com.lcodecore.tkrefreshlayout.header.SinaRefreshView;
 import com.ningwuyue.sdk.nwyvideoplayersdk.R;
 import com.ningwuyue.sdk.nwyvideoplayersdk.base.BaseActivity;
 import com.ningwuyue.sdk.nwyvideoplayersdk.base.BaseX5Webview;
+import com.ningwuyue.sdk.nwyvideoplayersdk.data.constant.Constant;
+import com.ningwuyue.sdk.nwyvideoplayersdk.data.constant.SpField;
+import com.ningwuyue.sdk.nwyvideoplayersdk.http.httpwork.HttpWorkUtils;
+import com.ningwuyue.sdk.nwyvideoplayersdk.model.SvipplayEntity;
 import com.ningwuyue.sdk.nwyvideoplayersdk.model.VipwebEntity;
+import com.ningwuyue.sdk.nwyvideoplayersdk.model.event.EventObject;
 import com.ningwuyue.sdk.nwyvideoplayersdk.util.common.LogUtils;
+import com.ningwuyue.sdk.nwyvideoplayersdk.util.common.SPUtils;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -64,9 +71,11 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
     private boolean isShield_Src = true;//是否是拦截的
     private TwinklingRefreshLayout mRefreshLayout;
     private LinearLayout mLl_guide_play;
+    private ProgressBar mProgressBar;
+    private TextView mTvTitle;
 
     public static void startVipWebViewActivity(Activity activity, VipwebEntity vipwebEntity) {
-        Intent intent = new Intent(activity,VipWebviewActivity.class);
+        Intent intent = new Intent(activity, VipWebviewActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_VIPWEBENTITY_KEY, vipwebEntity);
         intent.putExtras(bundle);
@@ -117,16 +126,17 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
 
     private void configView() {
         RelativeLayout mRlTopback = (RelativeLayout) findViewById(R.id.rl_topback);
-        TextView mTvTitle = (TextView) findViewById(R.id.tv_toptitle);
+        mTvTitle = (TextView) findViewById(R.id.tv_toptitle);
         mRefreshLayout = (TwinklingRefreshLayout) findViewById(R.id.refreshLayout);
-        final ProgressBar mProgressBar = (ProgressBar) findViewById(R.id.pb);
+        mProgressBar = (ProgressBar) findViewById(R.id.pb);
         TextView mTvTopcloseBtn = (TextView) findViewById(R.id.tv_topclose_btn);
         LinearLayout mLLTopsvipPlayBtn = (LinearLayout) findViewById(R.id.ll_topsvip_play_btn);
         ImageView mIvVipIcon = (ImageView) findViewById(R.id.iv_vip_icon);
         mLl_guide_play = (LinearLayout) findViewById(R.id.ll_guide_play);
-
         mRlTopback.setOnClickListener(this);
         mLLTopsvipPlayBtn.setOnClickListener(this);
+        mLl_guide_play.setOnClickListener(this);
+        mTvTopcloseBtn.setOnClickListener(this);
 
         TwinklingRefreshLayout.LayoutParams params = new TwinklingRefreshLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mX5WebView = new BaseX5Webview(this);
@@ -323,10 +333,15 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.rl_topback) {
+            onBackPressed();
+        } else if (id == R.id.tv_topclose_btn) {
             finish();
         } else if (id == R.id.ll_topsvip_play_btn) {
-
-
+            gone(mLl_guide_play);
+            showWaitingDialog();
+            HttpWorkUtils.getSvipPaly(1, mHtmlTitle, mURL, mVweb, Constant.TAG_SVIP_PLAY_AD_YES);
+        } else if (id == R.id.ll_topsvip_play_btn) {
+            gone(mLl_guide_play);
         }
     }
 
@@ -354,5 +369,83 @@ public class VipWebviewActivity extends BaseActivity implements View.OnClickList
         }
 
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (mX5WebView.canGoBack()) {
+            if ((System.currentTimeMillis() - exitTime) >= 2000) {
+                exitTime = System.currentTimeMillis();
+                mX5WebView.goBack();
+            } else {
+                isClearHistory = true;
+                mX5WebView.loadUrl(mHomeUrl);
+            }
+        } else {
+            finish();
+        }
+    }
+
+
+    @Override
+    public void receiveEventBus(EventObject eventObject) {
+        super.receiveEventBus(eventObject);
+        if (isResume) {
+            String tag = eventObject.tag;
+            if (tag.startsWith(HttpWorkUtils.HTTP_TAG_WEB_SVIP_GET_PLAY_URL)
+                    && (tag.endsWith(Constant.TAG_SVIP_PLAY_AD_YES) || tag.endsWith(Constant.TAG_SVIP_PLAY_AD_NO))) {
+                dismissWaitingDialog();
+                SPUtils.getInstance().put(SpField.CLICK_TOP_SVIP, true);//已经点击过了,  指引播放不再显示
+                SvipplayEntity event = (SvipplayEntity) eventObject.object;
+                if (event != null) {
+                    String play_type = event.play_type;
+                    String url_status = event.url_status;
+                    String svip_ad_open = event.svip_ad_open;
+                    if (!TextUtils.isEmpty(play_type) && play_type.equals("1")) {//webview播放
+                        SvippalyActivity.startSvipAvtivity(VipWebviewActivity.this, event, mVweb, mHtmlTitle, mURL, mName);
+                    } else if (!TextUtils.isEmpty(play_type) && play_type.equals("2")) {//原生播放
+                        VideoPlayerActivity.startActivity(this, event.play_url, mHtmlTitle, Constant.VIDEO_TYPE_HTTP,
+                                mHtmlTitle, mURL, "0", true, svip_ad_open, event);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        isDestroy = true;
+        super.onDestroy();
+        //releaseRes();
+        destroyWebView();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
+        SPUtils.getInstance().remove(SpField.SP_JS_1);
+        SPUtils.getInstance().remove(SpField.SP_JS_2);
+        System.gc();
+    }
+
+    /**
+     * 解决WebView持有mContext导致的内存泄漏问题
+     */
+    private void destroyWebView() {
+        if (mX5WebView != null) {
+            ViewParent parent = mX5WebView.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(mX5WebView);
+            }
+            try {
+                mX5WebView.stopLoading();
+                mX5WebView.getSettings().setJavaScriptEnabled(false);
+                mX5WebView.clearHistory();
+                mX5WebView.clearView();
+                mX5WebView.removeAllViews();
+                mX5WebView.destroy();
+            } catch (Throwable e) {
+            }
+        }
     }
 }
